@@ -9,7 +9,9 @@ react.js + flask + sqlite 实现的简单todo
 ```
 
 ## 前端依赖
+
 ```
+安装 npm
 npm install
 
 ```

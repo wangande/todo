@@ -41,7 +41,6 @@ var TodoBox = React.createClass({
                 }
         });
     },
-
     // 切换一项任务的完成状态
     handleToggleComplete: function(taskId) {
         var self = this;
@@ -56,7 +55,7 @@ var TodoBox = React.createClass({
                         var data = self.state.data;
                         for(var i in data) {
                             if (data[i].id === taskId) {
-                              data[i].complete = data[i].complete === "true" ? "false" : "true";
+                              data[i].complete = data[i].complete == true ? false : true;
                               break;
                             }
                         }

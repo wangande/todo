@@ -30,5 +30,5 @@ manage.py
 mesos-web-env
 node_modules
 gulpfile.js
-bundle.js
+# bundle.js
 tags
