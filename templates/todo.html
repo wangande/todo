@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <title>Simplest React Todo List</title>
+        <!--<link rel="stylesheet" href="/todo/css/bootstrap.min.css">-->
+        <link rel="stylesheet" href="{{url_for('static', filename='todo/css/bootstrap.min.css')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename='todo/css/style.css')}}">
+        <title>React Todo</title>
+    </head>
+    <body>
+        <div class="container">
+            <div id="mainNode" class="todoBox"></div>
+        </div>
+        <script src = "{{url_for('static', filename='todo/js/jquery.min.js')}}"></script>
+        <script src = "{{url_for('static', filename='todo/js/assets/bundle.js')}}"></script>
+
+    </body>
+</html>

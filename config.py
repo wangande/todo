@@ -1,0 +1,5 @@
+from consts import DB_URL
+
+DEBUG = True
+SQLALCHEMY_DATABASE_URI = DB_URL
+SQLALCHEMY_ = False
