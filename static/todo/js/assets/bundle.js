@@ -19668,6 +19668,7 @@
 
 	/**
 	 * Created by wangande on 17-3-7.
+	 * todo组件
 	 */
 
 	var React = __webpack_require__(2);
@@ -19681,9 +19682,9 @@
 	    getInitialState: function getInitialState() {
 	        return {
 	            data: [
-	                //   {"id": "0001", "task":"读书", "complete": "false"},
-	                //   {"id": "0002", "task":"看电影", "complete": "false"},
-	                //   {"id": "0003", "task":"打游戏", "complete": "true"},
+	                //   {"id": 1, "task":"读书", "complete": false},
+	                //   {"id": 2, "task":"看电影", "complete": false},
+	                //   {"id": 3, "task":"打游戏", "complete": false},
 	            ]
 	        };
 	    },
@@ -19699,6 +19700,7 @@
 	            dataType: "json",
 	            success: function success(resp) {
 	                ;
+	                // 删除成功，更新状态，这里不重新获取todoList，减少服务器请求
 	                if (resp.status == "success") {
 	                    var data = self.state.data;
 	                    data = data.filter(function (task) {
@@ -19723,6 +19725,7 @@
 	            dataType: "json",
 	            success: function success(resp) {
 	                ;
+	                // 修改成功，更新状态，这里不重新获取todoList，减少服务器请求
 	                if (resp.status == "success") {
 	                    var data = self.state.data;
 	                    for (var i in data) {
@@ -19750,7 +19753,7 @@
 	        //var data = this.state.data;
 	        //var id = this.generateId();
 	        //var complete = "false";
-	        //data = data.concat([{"id": id, "task": task, "complete": "false"}]);
+	        //data = data.concat([{"id": id, "task": task, "complete": false}]);
 	        //this.setState({data});
 	        var self = this;
 	        $.ajax({
@@ -19762,9 +19765,9 @@
 	            type: "POST",
 	            dataType: "json",
 	            success: function success(resp) {
-	                ;
+	                // 添加成功，重新获取todoList，因为ID为服务器生成，需重新拉取，也可以成功时返回，这个是重新拉取
 	                if (resp.status == "success") {
-	                    self.getTodoList();
+	                    self.getTaskList();
 	                }
 	            },
 	            error: function error() {
@@ -19772,7 +19775,8 @@
 	            }
 	        });
 	    },
-	    getTodoList: function getTodoList() {
+	    // 获取任务列表
+	    getTaskList: function getTaskList() {
 	        var self = this;
 	        $.ajax({
 	            url: "/todo",
@@ -19784,7 +19788,7 @@
 	                ;
 	                if (resp.status == "success") {
 	                    var data = resp.data;
-	                    console.log(data);
+	                    // console.log(data);
 	                    self.setState({ data: data });
 	                }
 	            },
@@ -19794,7 +19798,7 @@
 	        });
 	    },
 	    componentDidMount: function componentDidMount() {
-	        this.getTodoList();
+	        this.getTaskList();
 	    },
 
 	    render: function render() {
@@ -19802,7 +19806,7 @@
 	            // 统计任务总数及完成的数量
 	            todoCount: this.state.data.length || 0,
 	            todoCompleteCount: this.state.data.filter(function (item) {
-	                return item.complete === "true";
+	                return item.complete == true;
 	            }).length
 	        };
 
@@ -19816,7 +19820,7 @@
 	            React.createElement(
 	                "h1",
 	                { className: "text-center" },
-	                "Todo"
+	                "React Todo"
 	            ),
 	            React.createElement(
 	                "div",
@@ -19843,6 +19847,7 @@
 
 	/**
 	 * Created by wangande on 17-3-7.
+	 * 任务列表组件
 	 */
 
 	var React = __webpack_require__(2);
@@ -19883,6 +19888,7 @@
 
 	/**
 	 * Created by wangande on 17-3-7.
+	 * 任务节点组件
 	 */
 
 	var React = __webpack_require__(2);
@@ -19891,19 +19897,19 @@
 	var TodoItem = React.createClass({
 	    displayName: "TodoItem",
 
+	    // 任务状态切换
 	    toggleComplete: function toggleComplete() {
 	        this.props.toggleComplete(this.props.taskId);
 	    },
-
+	    // 删除任务
 	    deleteTask: function deleteTask() {
 	        this.props.deleteTask(this.props.taskId);
 	    },
-
 	    // 鼠标移入显示删除按钮
 	    handleMouseOver: function handleMouseOver() {
 	        ReactDOM.findDOMNode(this.refs.deleteBtn).style.display = "inline";
 	    },
-
+	    // 鼠标移出隐藏删除按钮
 	    handleMouseOut: function handleMouseOut() {
 	        ReactDOM.findDOMNode(this.refs.deleteBtn).style.display = "none";
 	    },
@@ -19936,7 +19942,7 @@
 	                { className: "pull-right" },
 	                React.createElement(
 	                    "button",
-	                    { type: "button", className: "btn btn-xs close", onClick: this.deleteTask, ref: "deleteBtn" },
+	                    { type: "button", className: "btn btn-xs", onClick: this.deleteTask, ref: "deleteBtn" },
 	                    "删除"
 	                )
 	            )
@@ -19954,6 +19960,7 @@
 
 	/**
 	 * Created by wangande on 17-3-7.
+	 * 任务总数组件
 	 */
 
 	var React = __webpack_require__(2);
@@ -19984,6 +19991,7 @@
 
 	/**
 	 * Created by wangande on 17-3-7.
+	 * 任务发布组件
 	 */
 
 	var React = __webpack_require__(2);
@@ -19992,6 +20000,7 @@
 	var TodoForm = React.createClass({
 	    displayName: "TodoForm",
 
+	    // 发布任务
 	    submitTask: function submitTask(e) {
 	        e.preventDefault();
 	        var task = ReactDOM.findDOMNode(this.refs.task).value.trim();

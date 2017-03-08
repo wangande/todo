@@ -1,11 +1,13 @@
 /**
  * Created by wangande on 17-3-7.
+ * 任务发布组件
  */
 
 var React = require("react");
 var ReactDOM = require("react-dom");
 
 var TodoForm = React.createClass({
+    // 发布任务
     submitTask: function(e) {
         e.preventDefault();
         var task = ReactDOM.findDOMNode(this.refs.task).value.trim();

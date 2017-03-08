@@ -1,5 +1,6 @@
 /**
  * Created by wangande on 17-3-7.
+ * todo组件
  */
 
 var React = require("react");
@@ -11,9 +12,9 @@ var TodoBox = React.createClass({
     getInitialState: function() {
         return {
             data: [
-            //   {"id": "0001", "task":"读书", "complete": "false"},
-            //   {"id": "0002", "task":"看电影", "complete": "false"},
-            //   {"id": "0003", "task":"打游戏", "complete": "true"},
+            //   {"id": 1, "task":"读书", "complete": false},
+            //   {"id": 2, "task":"看电影", "complete": false},
+            //   {"id": 3, "task":"打游戏", "complete": false},
             ]
         };
     },
@@ -28,6 +29,7 @@ var TodoBox = React.createClass({
                 type : "DELETE",
                 dataType : "json",
                 success : function (resp) {;
+                    // 删除成功，更新状态，这里不重新获取todoList，减少服务器请求
                     if(resp.status == "success"){
                         var data = self.state.data;
                         data = data.filter(function(task) {
@@ -51,6 +53,7 @@ var TodoBox = React.createClass({
                 type : "PUT",
                 dataType : "json",
                 success : function (resp) {;
+                    // 修改成功，更新状态，这里不重新获取todoList，减少服务器请求
                     if(resp.status == "success"){
                         var data = self.state.data;
                         for(var i in data) {
@@ -78,7 +81,7 @@ var TodoBox = React.createClass({
         //var data = this.state.data;
         //var id = this.generateId();
         //var complete = "false";
-        //data = data.concat([{"id": id, "task": task, "complete": "false"}]);
+        //data = data.concat([{"id": id, "task": task, "complete": false}]);
         //this.setState({data});
         var self = this;
         $.ajax({
@@ -89,9 +92,10 @@ var TodoBox = React.createClass({
                 },
                 type : "POST",
                 dataType : "json",
-                success : function (resp) {;
+                success : function (resp) {
+                    // 添加成功，重新获取todoList，因为ID为服务器生成，需重新拉取，也可以成功时返回，这个是重新拉取
                     if(resp.status == "success"){
-                        self.getTodoList();
+                        self.getTaskList();
                     }
                 },
                 error : function() {
@@ -99,7 +103,8 @@ var TodoBox = React.createClass({
                 }
         });
     },
-    getTodoList : function(){
+    // 获取任务列表
+    getTaskList : function(){
         var self = this;
         $.ajax({
                 url : "/todo",
@@ -110,7 +115,7 @@ var TodoBox = React.createClass({
                 success : function (resp) {;
                     if(resp.status == "success"){
                         var data = resp.data;
-                        console.log(data);
+                        // console.log(data);
                         self.setState({data});
                     }
                 },
@@ -120,7 +125,7 @@ var TodoBox = React.createClass({
         });
     },
     componentDidMount : function(){
-        this.getTodoList();
+        this.getTaskList();
     },
 
     render: function() {
@@ -128,7 +133,7 @@ var TodoBox = React.createClass({
             // 统计任务总数及完成的数量
             todoCount: this.state.data.length || 0,
             todoCompleteCount: this.state.data.filter(function(item) {
-              return item.complete === "true";
+              return item.complete == true;
             }).length
         };
 
@@ -138,7 +143,7 @@ var TodoBox = React.createClass({
 
         return (
             <div className="well">
-                <h1 className="text-center">Todo</h1>
+                <h1 className="text-center">React Todo</h1>
                 <div style={formClass}>
                      <TodoForm submitTask={this.handleSubmit} />
                 </div>

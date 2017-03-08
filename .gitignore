@@ -32,3 +32,4 @@ node_modules
 gulpfile.js
 # bundle.js
 tags
+*.db

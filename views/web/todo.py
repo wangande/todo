@@ -4,11 +4,9 @@
 todo相关请求接口，获取，新增，修改，删除
 """
 from flask import request
-
 from views.base import BaseView
 from models.todo.todo_model import TodoModel
 from server.tool.db import db_session
-
 import simplejson
 
 
@@ -26,7 +24,6 @@ class ToDo(BaseView):
     def post(self):
         """新增todo"""
         task = request.form.get("task", "default_task")
-        print "task==", task
         todo = TodoModel(task)
         db_session.add(todo)
         db_session.commit()
@@ -45,7 +42,6 @@ class ToDo(BaseView):
 
         todo = db_session.query(TodoModel).filter(TodoModel.id == todo_id).first()
         if todo:
-            # todo = db_session.query(TodoModel).filter_by(id=todo_id).first()
             complete = False if todo.complete else True
             db_session.query(TodoModel).filter(TodoModel.id == todo_id).update({TodoModel.complete: complete})
             db_session.commit()
