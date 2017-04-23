@@ -1,0 +1,50 @@
+# -*- coding: utf-8 -*-
+
+import logging
+
+from flask import Flask, g
+from ext import db
+from core.server import InitService
+from server.tool.db import init_db, db_session
+app = Flask(__name__)
+# db.init_app(app)
+
+
+def init_view_api():
+    from views.web.todo import ToDo
+    app.add_url_rule('/todo', view_func=ToDo.as_view('todo_api'), methods=['GET', 'POST'])
+    app.add_url_rule('/todo/<todo_id>', view_func=ToDo.as_view('todo'), methods=['PUT', 'DELETE'])
+
+
+def init_view_admin():
+    pass
+
+
+def init_view_web():
+    from views.web.index import Index
+    app.add_url_rule('/', view_func=Index.as_view('index'), methods=['GET'])
+
+
+def init_view():
+    init_view_api()
+    init_view_admin()
+    init_view_web()
+    logging.error("[init view api success]")
+
+
+@app.teardown_request
+def shutdown_session(exception=None):
+    db_session.remove()
+
+
+class Application(object):
+    def __init__(self):
+        # from server import tool
+        # InitService.load_init_services(app)
+        init_view()
+        init_db()
+
+if __name__ == '__main__':
+    Application()
+    app.run(host="127.0.0.1", port=8000, debug=True)
+

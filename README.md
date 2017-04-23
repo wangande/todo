@@ -6,6 +6,8 @@ react.js + flask + sqlite 实现的简单todo
 ## 运行
 ```
 开始前请先执行 python init_todo_db.py
+cp manage.py.bak manage.py
+python manage.py
 ```
 
 ## 前端依赖

@@ -7,7 +7,7 @@ from flask import request
 from views.base import BaseView
 from models.todo.todo_model import TodoModel
 from server.tool.db import db_session
-import simplejson
+import json
 
 
 class ToDo(BaseView):
@@ -19,7 +19,7 @@ class ToDo(BaseView):
         for r in rs:
             todo_list.append({"id": r.id, "task": r.task, "complete": r.complete})
         # print todo_list
-        return simplejson.dumps({"status": "success", "data": todo_list})
+        return json.dumps({"status": "success", "data": todo_list})
 
     def post(self):
         """新增todo"""
@@ -27,7 +27,7 @@ class ToDo(BaseView):
         todo = TodoModel(task)
         db_session.add(todo)
         db_session.commit()
-        return simplejson.dumps({"status": "success"})
+        return json.dumps({"status": "success"})
 
     def delete(self, todo_id):
         """删除todo"""
@@ -35,7 +35,7 @@ class ToDo(BaseView):
         if todo:
             db_session.delete(todo)
             db_session.commit()
-        return simplejson.dumps({"status": "success"})
+        return json.dumps({"status": "success"})
 
     def put(self, todo_id):
         """修改todo"""
@@ -45,4 +45,4 @@ class ToDo(BaseView):
             complete = False if todo.complete else True
             db_session.query(TodoModel).filter(TodoModel.id == todo_id).update({TodoModel.complete: complete})
             db_session.commit()
-        return simplejson.dumps({"status": "success"})
+        return json.dumps({"status": "success"})
